@@ -5,9 +5,7 @@ using UnityEngine.UI;
 
 public class OpticsData : ScriptableObject
 {
-    public string partName;
     public Image image;
+    public string partName;
     public float accuracy;
-    public float stability;
-    
 }

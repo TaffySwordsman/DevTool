@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class MagazineData : ScriptableObject
 {
-    public string partName;
     public Image image;
-    public float accuracy;
-    public float stability;
+    public string partName;
+    public int magSize;
+    public float reloadSpeed;
     
 }

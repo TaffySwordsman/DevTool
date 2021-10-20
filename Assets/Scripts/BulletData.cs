@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class BulletData : ScriptableObject
 {
-    public string partName;
     public Image image;
-    public float accuracy;
-    public float stability;
+    public string partName;
+    public float damage;
+    public float projectileSpeed;
     
 }

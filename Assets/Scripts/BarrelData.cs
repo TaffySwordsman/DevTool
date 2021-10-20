@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 public class BarrelData : ScriptableObject
 {
-    public string partName;
     public Image image;
+    public string partName;
     public float accuracy;
-    public float stability;
-    
+    public float stability; 
 }
