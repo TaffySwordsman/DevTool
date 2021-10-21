@@ -30,6 +30,14 @@ public class WeaponDesignerWindow : EditorWindow
     Color attachmentColor = Color.cyan;
     Color weaponColor = Color.magenta;
 
+    MagnificationEnums magnification = MagnificationEnums.X1;
+    float damage = 1;
+    float accuracy = 1;
+    float stability = 1;
+    float reloadSpeed = 3;
+    float fireRate = 10;
+    float magSize = 10;
+
     [MenuItem("Window/Weapon Designer")]
     static void OpenWindow()
     {
@@ -120,10 +128,22 @@ public class WeaponDesignerWindow : EditorWindow
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(displaySection.y - 30));
 
         EditorGUILayout.Space(10);
-        GUILayout.Label("Weapon", EditorStyles.boldLabel);
-        EditorGUILayout.Space(10);
+        GUILayout.Label("Weapon Parts", EditorStyles.boldLabel);
 
         DrawPartFields();
+
+        EditorGUILayout.Space(10);
+
+        GUILayout.Label("Weapon Attributes", EditorStyles.boldLabel);
+
+        magnification = (MagnificationEnums)EditorGUILayout.EnumPopup("Magnification", magnification);
+        damage = EditorGUILayout.FloatField("Damage", damage);
+        accuracy = EditorGUILayout.FloatField("Accuracy", accuracy);
+        stability = EditorGUILayout.FloatField("Stability", stability);
+        reloadSpeed = EditorGUILayout.FloatField("Reload Speed", reloadSpeed);
+        fireRate = EditorGUILayout.FloatField("Fire Rate", fireRate);
+        magSize = EditorGUILayout.FloatField("Magazine Size", magSize);
+
 
         EditorGUILayout.Space(10);
 
@@ -198,12 +218,27 @@ public class WeaponDesignerWindow : EditorWindow
         {
             baseTexture = noWeapon;
             baseName = "Empty";
+
+            magnification = MagnificationEnums.X1;
+            damage = 1;
+            accuracy = 1;
+            stability = 1;
+            reloadSpeed = 3;
+            fireRate = 10;
+            magSize = 10;
         }
         else
         {
             baseTexture = weaponBase.image;
             baseName = weaponBase.partName;
-            // weapon.weaponBase = weaponBase;
+
+            magnification = weaponBase.magnification;
+            damage = weaponBase.damage;
+            accuracy = weaponBase.accuracy;
+            stability = weaponBase.stability;
+            reloadSpeed = weaponBase.reloadSpeed;
+            fireRate = weaponBase.fireRate;
+            magSize = weaponBase.magSize;
         }
 
         barrel = (BarrelData)EditorGUILayout.ObjectField("Barrel", barrel, typeof(BarrelData), false);
@@ -212,12 +247,17 @@ public class WeaponDesignerWindow : EditorWindow
         {
             barrelTexture = noAttachment;
             barrelName = "Empty";
+
+            accuracy = 1;
+            stability = 1;
         }
         else
         {
             barrelTexture = barrel.image;
             barrelName = barrel.partName;
-            // weapon.barrel = barrel;
+
+            accuracy = Mathf.Clamp(accuracy + barrel.accuracyModifier, 0, 1);
+            stability = Mathf.Clamp(stability + barrel.stabilityModifier, 0, 1);
         }
 
         optics = (OpticsData)EditorGUILayout.ObjectField("Optics", optics, typeof(OpticsData), false);
@@ -226,12 +266,15 @@ public class WeaponDesignerWindow : EditorWindow
         {
             opticsTexture = noAttachment;
             opticsName = "Empty";
+
+            magnification = MagnificationEnums.X1;
         }
         else
         {
             opticsTexture = optics.image;
             opticsName = optics.partName;
-            // weapon.optics = optics;
+
+            magnification = optics.magnification;
         }
 
         magazine = (MagazineData)EditorGUILayout.ObjectField("Magazine", magazine, typeof(MagazineData), false);
@@ -240,18 +283,22 @@ public class WeaponDesignerWindow : EditorWindow
         {
             magTexture = noAttachment;
             magName = "Empty";
+
+            magSize = 10;
+            reloadSpeed = 3;
         }
         else
         {
             magTexture = magazine.image;
             magName = magazine.partName;
-            // weapon.magazine = magazine;
+
+            magSize = magazine.magSize;
+            reloadSpeed = magazine.reloadSpeed;
         }
     }
 
     Rect CenterTextAbove(Rect bounds)
     {
-        // return new Rect ((bounds.width / 2) - (image.width/2), (bounds.height / 2) - (image.height/2), image.width, image.height);
         return new Rect(bounds.x, bounds.y - 20, bounds.width, 20);
     }
 
