@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24a4ce7c78eb1a748a36c68870a8324b, type: 3}
-  m_Name: Full Choke
+  m_Name: Suppressor
   m_EditorClassIdentifier: 
-  image: {fileID: 2800000, guid: f60c609a003b1124883c3f711f574329, type: 3}
-  partName: Full Choke
-  accuracyModifier: 0.3
-  stabilityModifier: -0.2
+  image: {fileID: 2800000, guid: 974b4cce5c35dcb4997a59faedd9f544, type: 3}
+  partName: Suppressor
+  accuracyModifier: -0.2
+  stabilityModifier: 0.25

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e4df83f59593fe4abd75e3abdc68742, type: 3}
-  m_Name: Famas
+  m_Name: AN-94
   m_EditorClassIdentifier: 
-  image: {fileID: 2800000, guid: e86e6cf84118a954d97c36b903d3e788, type: 3}
-  partName: Famas
+  image: {fileID: 2800000, guid: d6076711327dcb347b1aee06e7024f58, type: 3}
+  partName: AN-94
   magnification: 0
-  damage: 30
-  accuracy: 0.755
-  stability: 0.546
-  reloadSpeed: 2.5
-  fireRate: 15
-  magSize: 31
+  damage: 18
+  accuracy: 0.801
+  stability: 0.719
+  reloadSpeed: 2
+  fireRate: 30
+  magSize: 30
