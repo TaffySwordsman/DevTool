@@ -15,6 +15,7 @@ public class WeaponDesignerWindow : EditorWindow
     MagazineData magazine;
 
     string weaponName, barrelName, opticsName, magName;
+    Vector2 scrollPos;
 
     Rect mainSection;
     Rect displaySection;
@@ -114,11 +115,14 @@ public class WeaponDesignerWindow : EditorWindow
         // GUI.DrawTexture(attachmentSection, attachTex);
         // GUI.DrawTexture(weaponSection, weapTex);
 
-        GUILayout.BeginArea(mainSection);
         EditorGUILayout.BeginVertical();
-        EditorGUILayout.Space();
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
-        weaponBase = (WeaponBaseData)EditorGUILayout.ObjectField("Weapon Base", weaponBase, typeof(WeaponBaseData), false);
+        EditorGUILayout.Space(10);
+        GUILayout.Label("Weapon", EditorStyles.boldLabel);
+        EditorGUILayout.Space(10);
+
+        weaponBase = (WeaponBaseData)EditorGUILayout.ObjectField("Base", weaponBase, typeof(WeaponBaseData), false);
         // If "None" selected
         if (weaponBase == null)
         {
@@ -170,6 +174,9 @@ public class WeaponDesignerWindow : EditorWindow
             magName = magazine.partName;
         }
 
+        
+
+        EditorGUILayout.EndScrollView();
         EditorGUILayout.EndVertical();
 
         GUI.DrawTexture(barrelSection, barrelTexture, ScaleMode.ScaleToFit);
@@ -180,7 +187,6 @@ public class WeaponDesignerWindow : EditorWindow
         GUI.Label(CenterTextAbove(magSection), magName);
         GUI.DrawTexture(weaponSection, baseTexture, ScaleMode.ScaleToFit);
         GUI.Label(CenterTextAbove(weaponSection), weaponName);
-        GUILayout.EndArea();
     }
 
     void DrawHeader()
