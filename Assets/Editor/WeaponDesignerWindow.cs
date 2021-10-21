@@ -5,14 +5,23 @@ using UnityEditor;
 
 public class WeaponDesignerWindow : EditorWindow
 {
-
+    Texture2D noWeapon, noAttachment, weapon;
     Texture2D baseTexture;
     Texture2D opticsTexture;
     Texture2D barrelTexture;
     Texture2D magTexture;
 
+    Texture2D mainTex, dispTex, attachTex, weapTex;
+
     Rect mainSection;
     Rect displaySection;
+    Rect attachmentSection;
+    Rect weaponSection;
+
+    Color mainColor = Color.yellow;
+    Color displayColor = Color.blue;
+    Color attachmentColor = Color.cyan;
+    Color weaponColor = Color.magenta;
 
     [MenuItem("Window/Weapon Designer")]
     static void OpenWindow()
@@ -29,7 +38,24 @@ public class WeaponDesignerWindow : EditorWindow
 
     void InitTextures()
     {
-        baseTexture = Resources.Load<Texture2D>("Famas");
+        mainTex = new Texture2D(1,1);
+        mainTex.SetPixel(0, 0, mainColor);
+        mainTex.Apply();
+
+        dispTex = new Texture2D(1,1);
+        dispTex.SetPixel(0, 0, displayColor);
+        dispTex.Apply();
+
+        attachTex = new Texture2D(1,1);
+        attachTex.SetPixel(0, 0, weaponColor);
+        attachTex.Apply();
+
+        weapTex = new Texture2D(1,1);
+        weapTex.SetPixel(0, 0, attachmentColor);
+        weapTex.Apply();
+
+        noWeapon = Resources.Load<Texture2D>("RifleNone");
+        noAttachment = Resources.Load<Texture2D>("None");
     }
 
     void OnGUI()
@@ -46,16 +72,42 @@ public class WeaponDesignerWindow : EditorWindow
         mainSection.height = Screen.height;
 
         displaySection.x = 20;
-        displaySection.y = Screen.height * 0.66f + 20;
+        displaySection.y = Screen.height * 0.5f + 20;
         displaySection.width = Screen.width - 50;
-        displaySection.height = Screen.height * 0.33f - 50;
+        displaySection.height = Screen.height * 0.5f - 50;
 
+        attachmentSection.x = displaySection.x;
+        attachmentSection.y = displaySection.y;
+        attachmentSection.width = displaySection.width;
+        attachmentSection.height = displaySection.height * 0.33f;
+
+        weaponSection.x = displaySection.x;
+        weaponSection.y = displaySection.y + displaySection.height * 0.33f;
+        weaponSection.width = displaySection.width;
+        weaponSection.height = displaySection.height * 0.66f;
+
+        // Used for debug
+        GUI.DrawTexture(mainSection, mainTex);
+        GUI.DrawTexture(displaySection, dispTex);
+        GUI.DrawTexture(attachmentSection, attachTex);
+        GUI.DrawTexture(weaponSection, weapTex);
+
+        GUILayout.BeginArea(mainSection);
         EditorGUILayout.BeginVertical();
-        EditorGUILayout.ObjectField(baseTexture, typeof(Texture2D), false);
+        EditorGUILayout.Space();
+        
+        baseTexture = (Texture2D)EditorGUILayout.ObjectField(baseTexture, typeof(Texture2D), false);
+        // If "None" selected
+        if(baseTexture == null)
+            weapon = noWeapon;
+        else
+            weapon = baseTexture;
+
         EditorGUILayout.ObjectField(opticsTexture, typeof(Texture2D), false);
         EditorGUILayout.EndVertical();
 
-        GUI.DrawTexture(displaySection, baseTexture, ScaleMode.ScaleToFit);
+        GUI.DrawTexture(weaponSection, weapon, ScaleMode.ScaleToFit);
+        GUILayout.EndArea();
     }
 
     void DrawHeader()
