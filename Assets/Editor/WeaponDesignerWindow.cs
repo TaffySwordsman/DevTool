@@ -5,6 +5,7 @@ using UnityEditor;
 
 public class WeaponDesignerWindow : EditorWindow
 {
+
     Texture2D noWeapon, noAttachment;
     Texture2D baseTexture, opticsTexture, barrelTexture, magTexture;
     Texture2D mainTex, dispTex, attachTex, weapTex;
@@ -14,7 +15,7 @@ public class WeaponDesignerWindow : EditorWindow
     OpticsData optics;
     MagazineData magazine;
 
-    string weaponName, barrelName, opticsName, magName;
+    string weaponName, baseName, barrelName, opticsName, magName;
     Vector2 scrollPos;
 
     Rect mainSection;
@@ -69,7 +70,6 @@ public class WeaponDesignerWindow : EditorWindow
         centeredStyle.alignment = TextAnchor.UpperCenter;
 
         DrawLayouts();
-        DrawHeader();
     }
 
     void DrawLayouts()
@@ -122,17 +122,20 @@ public class WeaponDesignerWindow : EditorWindow
         GUILayout.Label("Weapon", EditorStyles.boldLabel);
         EditorGUILayout.Space(10);
 
+        weaponName = EditorGUILayout.TextField("Name", weaponName);
+
         weaponBase = (WeaponBaseData)EditorGUILayout.ObjectField("Base", weaponBase, typeof(WeaponBaseData), false);
         // If "None" selected
         if (weaponBase == null)
         {
             baseTexture = noWeapon;
-            weaponName = "Empty";
+            baseName = "Empty";
         }
         else
         {
             baseTexture = weaponBase.image;
-            weaponName = weaponBase.partName;
+            baseName = weaponBase.partName;
+            // weapon.weaponBase = weaponBase;
         }
 
         barrel = (BarrelData)EditorGUILayout.ObjectField("Barrel", barrel, typeof(BarrelData), false);
@@ -146,6 +149,7 @@ public class WeaponDesignerWindow : EditorWindow
         {
             barrelTexture = barrel.image;
             barrelName = barrel.partName;
+            // weapon.barrel = barrel;
         }
 
         optics = (OpticsData)EditorGUILayout.ObjectField("Optics", optics, typeof(OpticsData), false);
@@ -159,6 +163,7 @@ public class WeaponDesignerWindow : EditorWindow
         {
             opticsTexture = optics.image;
             opticsName = optics.partName;
+            // weapon.optics = optics;
         }
 
         magazine = (MagazineData)EditorGUILayout.ObjectField("Magazine", magazine, typeof(MagazineData), false);
@@ -172,9 +177,21 @@ public class WeaponDesignerWindow : EditorWindow
         {
             magTexture = magazine.image;
             magName = magazine.partName;
+            // weapon.magazine = magazine;
         }
 
-        
+        EditorGUILayout.Space(10);
+
+        if (GUILayout.Button("Save Weapon", GUILayout.Height(40)))
+        {
+            GameObject prefab = new GameObject(weaponName);
+            Weapon prefabWeapon = prefab.AddComponent<Weapon>();
+            GameObject newPrefab = prefabWeapon.CreatePrefab(weaponName, weaponBase, barrel, optics, magazine);
+            DestroyImmediate(newPrefab);
+            // string localPath = "Assets/" + weaponName + ".prefab";
+            // localPath = AssetDatabase.GenerateUniqueAssetPath(localPath);
+            // PrefabUtility.SaveAsPrefabAssetAndConnect(prefab, localPath, InteractionMode.UserAction);
+        }
 
         EditorGUILayout.EndScrollView();
         EditorGUILayout.EndVertical();
@@ -186,12 +203,7 @@ public class WeaponDesignerWindow : EditorWindow
         GUI.DrawTexture(magSection, magTexture, ScaleMode.ScaleToFit);
         GUI.Label(CenterTextAbove(magSection), magName);
         GUI.DrawTexture(weaponSection, baseTexture, ScaleMode.ScaleToFit);
-        GUI.Label(CenterTextAbove(weaponSection), weaponName);
-    }
-
-    void DrawHeader()
-    {
-
+        GUI.Label(CenterTextAbove(weaponSection), baseName);
     }
 
     Rect CenterTextAbove(Rect bounds)
