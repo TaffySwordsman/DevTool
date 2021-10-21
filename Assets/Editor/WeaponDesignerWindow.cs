@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.IO;
 
 public class WeaponDesignerWindow : EditorWindow
 {
@@ -116,12 +117,79 @@ public class WeaponDesignerWindow : EditorWindow
         // GUI.DrawTexture(weaponSection, weapTex);
 
         EditorGUILayout.BeginVertical();
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(displaySection.y - 30));
 
         EditorGUILayout.Space(10);
         GUILayout.Label("Weapon", EditorStyles.boldLabel);
         EditorGUILayout.Space(10);
 
+        DrawPartFields();
+
+        EditorGUILayout.Space(10);
+
+        EditorGUILayout.BeginHorizontal();
+        
+        if (GUILayout.Button("New Base", GUILayout.Height(40)))
+        {
+            WeaponPartAsset.CreateWeaponBase();
+        }
+        if (GUILayout.Button("New Barrel", GUILayout.Height(40)))
+        {
+            WeaponPartAsset.CreateBarrel();
+        }
+        if (GUILayout.Button("New Optics", GUILayout.Height(40)))
+        {
+            WeaponPartAsset.CreateOptics();
+        }
+        if (GUILayout.Button("New Magazine", GUILayout.Height(40)))
+        {
+            WeaponPartAsset.CreateMagazine();
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        WeaponBaseData[] instances = Resources.FindObjectsOfTypeAll<WeaponBaseData>();
+
+        if (GUILayout.Button("Reset Weapon", GUILayout.Height(40)))
+        {
+            weaponName = "";
+            weaponBase = null;
+            barrel = null;
+            optics = null;
+            magazine = null;
+        }
+
+        if (GUILayout.Button("Save Weapon As Prefab", GUILayout.Height(40)))
+        {
+            GameObject prefab = new GameObject(weaponName);
+            Weapon prefabWeapon = prefab.AddComponent<Weapon>();
+            GameObject newPrefab = prefabWeapon.CreatePrefab(weaponName, weaponBase, barrel, optics, magazine);
+            string localPath = "Assets/Saved Weapons/" + weaponName + ".prefab";
+            if (!Directory.Exists("Assets/Saved Weapons/"))
+                Directory.CreateDirectory("Assets/Saved Weapons/");
+            localPath = AssetDatabase.GenerateUniqueAssetPath(localPath);
+            PrefabUtility.SaveAsPrefabAssetAndConnect(prefab, localPath, InteractionMode.UserAction);
+            DestroyImmediate(newPrefab);
+        }
+
+        EditorGUILayout.EndScrollView();
+        EditorGUILayout.EndVertical();
+
+        GuiLine(3);
+        EditorGUILayout.Space(10);
+
+        GUI.DrawTexture(barrelSection, barrelTexture, ScaleMode.ScaleToFit);
+        GUI.Label(CenterTextAbove(barrelSection), barrelName);
+        GUI.DrawTexture(opticsSection, opticsTexture, ScaleMode.ScaleToFit);
+        GUI.Label(CenterTextAbove(opticsSection), opticsName);
+        GUI.DrawTexture(magSection, magTexture, ScaleMode.ScaleToFit);
+        GUI.Label(CenterTextAbove(magSection), magName);
+        GUI.DrawTexture(weaponSection, baseTexture, ScaleMode.ScaleToFit);
+        GUI.Label(CenterTextAbove(weaponSection), baseName);
+    }
+
+    void DrawPartFields()
+    {
         weaponName = EditorGUILayout.TextField("Name", weaponName);
 
         weaponBase = (WeaponBaseData)EditorGUILayout.ObjectField("Base", weaponBase, typeof(WeaponBaseData), false);
@@ -179,36 +247,18 @@ public class WeaponDesignerWindow : EditorWindow
             magName = magazine.partName;
             // weapon.magazine = magazine;
         }
-
-        EditorGUILayout.Space(10);
-
-        if (GUILayout.Button("Save Weapon", GUILayout.Height(40)))
-        {
-            GameObject prefab = new GameObject(weaponName);
-            Weapon prefabWeapon = prefab.AddComponent<Weapon>();
-            GameObject newPrefab = prefabWeapon.CreatePrefab(weaponName, weaponBase, barrel, optics, magazine);
-            DestroyImmediate(newPrefab);
-            // string localPath = "Assets/" + weaponName + ".prefab";
-            // localPath = AssetDatabase.GenerateUniqueAssetPath(localPath);
-            // PrefabUtility.SaveAsPrefabAssetAndConnect(prefab, localPath, InteractionMode.UserAction);
-        }
-
-        EditorGUILayout.EndScrollView();
-        EditorGUILayout.EndVertical();
-
-        GUI.DrawTexture(barrelSection, barrelTexture, ScaleMode.ScaleToFit);
-        GUI.Label(CenterTextAbove(barrelSection), barrelName);
-        GUI.DrawTexture(opticsSection, opticsTexture, ScaleMode.ScaleToFit);
-        GUI.Label(CenterTextAbove(opticsSection), opticsName);
-        GUI.DrawTexture(magSection, magTexture, ScaleMode.ScaleToFit);
-        GUI.Label(CenterTextAbove(magSection), magName);
-        GUI.DrawTexture(weaponSection, baseTexture, ScaleMode.ScaleToFit);
-        GUI.Label(CenterTextAbove(weaponSection), baseName);
     }
 
     Rect CenterTextAbove(Rect bounds)
     {
         // return new Rect ((bounds.width / 2) - (image.width/2), (bounds.height / 2) - (image.height/2), image.width, image.height);
         return new Rect(bounds.x, bounds.y - 20, bounds.width, 20);
+    }
+
+    void GuiLine(int i_height = 1)
+    {
+        Rect rect = EditorGUILayout.GetControlRect(false, i_height);
+        rect.height = i_height;
+        EditorGUI.DrawRect(rect, new Color(0.5f, 0.5f, 0.5f, 1));
     }
 }

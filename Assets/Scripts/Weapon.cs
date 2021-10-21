@@ -63,6 +63,7 @@ public class Weapon : MonoBehaviour
 
     public GameObject CreatePrefab(string weaponName, WeaponBaseData weaponBase = null, BarrelData barrel = null, OpticsData optics = null, MagazineData magazine = null)
     {
+        this.weaponName = weaponName;
         this.weaponBase = weaponBase;
         this.barrel = barrel;
         this.optics = optics;
