@@ -168,8 +168,6 @@ public class WeaponDesignerWindow : EditorWindow
 
         EditorGUILayout.EndHorizontal();
 
-        WeaponBaseData[] instances = Resources.FindObjectsOfTypeAll<WeaponBaseData>();
-
         if (GUILayout.Button("Reset Weapon", GUILayout.Height(40)))
         {
             weaponName = "New Weapon";
