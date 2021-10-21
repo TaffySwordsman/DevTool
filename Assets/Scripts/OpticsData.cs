@@ -7,5 +7,5 @@ public class OpticsData : ScriptableObject
 {
     public Image image;
     public string partName;
-    public float accuracy;
+    public float magnification;
 }

@@ -26,10 +26,4 @@ public class WeaponPartAsset
 	{
 		ScriptableObjectUtility.CreateAsset<BarrelData> ();
 	}
-
-    [MenuItem("Assets/Create/Modular Weapon Part/Bullet")]
-	public static void CreateBullet ()
-	{
-		ScriptableObjectUtility.CreateAsset<BulletData> ();
-	}
 }

@@ -23,11 +23,11 @@ public static class ScriptableObjectUtility
  
 		string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath (path + "/New " + typeof(T).ToString() + ".asset");
  
-		AssetDatabase.CreateAsset (asset, assetPathAndName);
+		ProjectWindowUtil.CreateAsset (asset, assetPathAndName);
  
 		AssetDatabase.SaveAssets ();
         	AssetDatabase.Refresh();
-		EditorUtility.FocusProjectWindow ();
 		Selection.activeObject = asset;
+        EditorUtility.FocusProjectWindow ();
 	}
 }

@@ -7,6 +7,7 @@ public class WeaponBaseData : ScriptableObject
 {
     public Image image;
     public string partName;
+    public float magnification;
     public float damage;
     public float accuracy;
     public float stability;
