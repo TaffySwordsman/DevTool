@@ -5,18 +5,19 @@ using UnityEditor;
 
 public class WeaponDesignerWindow : EditorWindow
 {
-    Texture2D noWeapon, noAttachment, weapon;
-    Texture2D baseTexture;
-    Texture2D opticsTexture;
-    Texture2D barrelTexture;
-    Texture2D magTexture;
-
+    Texture2D noWeapon, noAttachment;
+    Texture2D baseTexture, opticsTexture, barrelTexture, magTexture;
+    WeaponBaseData weaponBase;
+    BarrelData barrel;
+    OpticsData optics;
+    MagazineData magazine;
     Texture2D mainTex, dispTex, attachTex, weapTex;
 
     Rect mainSection;
     Rect displaySection;
     Rect attachmentSection;
     Rect weaponSection;
+    Rect barrelSection, opticsSection, magSection;
 
     Color mainColor = Color.yellow;
     Color displayColor = Color.blue;
@@ -86,27 +87,68 @@ public class WeaponDesignerWindow : EditorWindow
         weaponSection.width = displaySection.width;
         weaponSection.height = displaySection.height * 0.66f;
 
+        barrelSection.x = attachmentSection.x;
+        barrelSection.y = attachmentSection.y;
+        barrelSection.width = attachmentSection.width / 3;
+        barrelSection.height = attachmentSection.height;
+
+        opticsSection.x = attachmentSection.x + attachmentSection.width / 3;
+        opticsSection.y = attachmentSection.y;
+        opticsSection.width = attachmentSection.width / 3;
+        opticsSection.height = attachmentSection.height;
+
+        magSection.x = attachmentSection.x + attachmentSection.width / 3 * 2;
+        magSection.y = attachmentSection.y;
+        magSection.width = attachmentSection.width / 3;
+        magSection.height = attachmentSection.height;
+
         // Used for debug
-        GUI.DrawTexture(mainSection, mainTex);
-        GUI.DrawTexture(displaySection, dispTex);
-        GUI.DrawTexture(attachmentSection, attachTex);
-        GUI.DrawTexture(weaponSection, weapTex);
+        // GUI.DrawTexture(mainSection, mainTex);
+        // GUI.DrawTexture(displaySection, dispTex);
+        // GUI.DrawTexture(attachmentSection, attachTex);
+        // GUI.DrawTexture(weaponSection, weapTex);
 
         GUILayout.BeginArea(mainSection);
         EditorGUILayout.BeginVertical();
         EditorGUILayout.Space();
         
-        baseTexture = (Texture2D)EditorGUILayout.ObjectField(baseTexture, typeof(Texture2D), false);
+        weaponBase = (WeaponBaseData)EditorGUILayout.ObjectField("Weapon Base", weaponBase, typeof(WeaponBaseData), false);
         // If "None" selected
-        if(baseTexture == null)
-            weapon = noWeapon;
+        if(weaponBase == null)
+            baseTexture = noWeapon;
         else
-            weapon = baseTexture;
+            baseTexture = weaponBase.image;
 
-        EditorGUILayout.ObjectField(opticsTexture, typeof(Texture2D), false);
+        barrel = (BarrelData)EditorGUILayout.ObjectField("Barrel", barrel, typeof(BarrelData), false);
+        // If "None" selected
+        if(barrel == null)
+            barrelTexture = noAttachment;
+        else
+            barrelTexture = barrel.image;
+
+        optics = (OpticsData)EditorGUILayout.ObjectField("Optics", optics, typeof(OpticsData), false);
+        // If "None" selected
+        if(optics == null)
+            opticsTexture = noAttachment;
+        else
+            opticsTexture = optics.image;
+
+        magazine = (MagazineData)EditorGUILayout.ObjectField("Magazine", magazine, typeof(MagazineData), false);
+        // If "None" selected
+        if(magazine == null)
+            magTexture = noAttachment;
+        else
+            magTexture = magazine.image;
+
         EditorGUILayout.EndVertical();
 
-        GUI.DrawTexture(weaponSection, weapon, ScaleMode.ScaleToFit);
+        GUI.DrawTexture(barrelSection, barrelTexture, ScaleMode.ScaleToFit);
+        GUI.Label(CenterTextAbove(barrelSection), "Testing 123");
+        GUI.DrawTexture(opticsSection, opticsTexture, ScaleMode.ScaleToFit);
+        GUI.Label(CenterTextAbove(opticsSection), "Testing 123");
+        GUI.DrawTexture(magSection, magTexture, ScaleMode.ScaleToFit);
+        GUI.Label(CenterTextAbove(magSection), "Testing 123");
+        GUI.DrawTexture(weaponSection, baseTexture, ScaleMode.ScaleToFit);
         GUILayout.EndArea();
     }
 
@@ -115,8 +157,9 @@ public class WeaponDesignerWindow : EditorWindow
 
     }
 
-    Rect CenterImage(Texture2D image, Rect bounds)
+    Rect CenterTextAbove(Rect bounds)
     {
-        return new Rect ((bounds.width / 2) - (image.width/2), (bounds.height / 2) - (image.height/2), image.width, image.height);
+        // return new Rect ((bounds.width / 2) - (image.width/2), (bounds.height / 2) - (image.height/2), image.width, image.height);
+        return new Rect(bounds.x, bounds.y - 20, bounds.width, 20);
     }
 }
