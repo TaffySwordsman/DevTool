@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class OpticsData : ScriptableObject
 {
-    public Image image;
+    public Texture2D image;
     public string partName;
-    public float magnification;
+    public MagnificationEnums magnification;
 }

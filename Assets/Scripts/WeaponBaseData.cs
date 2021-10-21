@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class WeaponBaseData : ScriptableObject
 {
-    public Image image;
+    public Texture2D image;
     public string partName;
-    public float magnification;
+    public MagnificationEnums magnification;
     public float damage;
+    [Range(0, 1)]
     public float accuracy;
+    [Range(0, 1)]
     public float stability;
     public float reloadSpeed;
     public float fireRate;

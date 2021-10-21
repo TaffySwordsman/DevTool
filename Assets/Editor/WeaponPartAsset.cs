@@ -24,6 +24,6 @@ public class WeaponPartAsset
     [MenuItem("Assets/Create/Modular Weapon Part/Magazine")]
 	public static void CreateMagazine ()
 	{
-		ScriptableObjectUtility.CreateAsset<BarrelData> ();
+		ScriptableObjectUtility.CreateAsset<MagazineData> ();
 	}
 }

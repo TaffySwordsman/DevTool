@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24a4ce7c78eb1a748a36c68870a8324b, type: 3}
-  m_Name: FastMag
+  m_Script: {fileID: 11500000, guid: 68d91109bec26984fa3384a64d6fe5c3, type: 3}
+  m_Name: ACOG
   m_EditorClassIdentifier: 
-  image: {fileID: 0}
-  partName: 
-  accuracy: 0
-  stability: 0
+  image: {fileID: 2800000, guid: be1c4e71d5f0fdc4aa106f68cba01413, type: 3}
+  partName: ACOG
+  magnification: 3

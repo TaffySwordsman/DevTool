@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class BarrelData : ScriptableObject
 {
-    public Image image;
+    public Texture2D image;
     public string partName;
-    public float accuracy;
-    public float stability; 
+    [Range(-1, 1)]
+    public float accuracyModifier;
+    [Range(-1, 1)]
+    public float stabilityModifier; 
 }

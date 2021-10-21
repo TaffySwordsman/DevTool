@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MagazineData : ScriptableObject
 {
-    public Image image;
+    public Texture2D image;
     public string partName;
     public int magSize;
     public float reloadSpeed;
