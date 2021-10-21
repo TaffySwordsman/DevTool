@@ -16,7 +16,7 @@ public class WeaponDesignerWindow : EditorWindow
     OpticsData optics;
     MagazineData magazine;
 
-    string weaponName, baseName, barrelName, opticsName, magName;
+    string weaponName = "New Weapon", baseName, barrelName, opticsName, magName;
     Vector2 scrollPos;
 
     Rect mainSection;
@@ -152,7 +152,7 @@ public class WeaponDesignerWindow : EditorWindow
 
         if (GUILayout.Button("Reset Weapon", GUILayout.Height(40)))
         {
-            weaponName = "";
+            weaponName = "New Weapon";
             weaponBase = null;
             barrel = null;
             optics = null;
